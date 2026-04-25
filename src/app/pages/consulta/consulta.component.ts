@@ -1,16 +1,23 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { LeadService } from '../../services/lead.service';
 import { Lead } from '../../interfaces/lead';
 import { TaskItem } from '../../interfaces/task-item';
 
 @Component({
   selector: 'app-consulta',
-  imports: [],
+  standalone: true, // importante para Angular 17+
+  imports: [CommonModule, FormsModule], // aqui entram os módulos usados no template
   templateUrl: './consulta.component.html',
-  styleUrl: './consulta.component.css'
+  styleUrls: ['./consulta.component.css'] // cuidado: é styleUrls (plural)
 })
-export class LeadsComponent {
+export class ConsultaComponent {
   leads: Lead[] = [];
+
+  searchTerm: string = '';
+  statusFilter: string = '';
 
   constructor(private leadService: LeadService) {
     this.listarLeads();
@@ -22,8 +29,20 @@ export class LeadsComponent {
     });
   }
 
+  filteredLeads(): Lead[] {
+    return this.leads.filter(lead => {
+      const matchesSearch =
+        lead.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        lead.email.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+      const matchesStatus =
+        this.statusFilter === '' || lead.status === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }
+
   editarLead(lead: Lead) {
-    // aqui você pode abrir um formulário com os dados do lead
     console.log('Editar lead:', lead);
   }
 
@@ -34,7 +53,6 @@ export class LeadsComponent {
   }
 
   editarTask(leadId: number, task: TaskItem) {
-    // abrir formulário para editar a task
     console.log('Editar task:', task, 'do lead', leadId);
   }
 
@@ -46,4 +64,3 @@ export class LeadsComponent {
     }
   }
 }
-
