@@ -1,1 +1,45 @@
-<p>consulta works!</p>
+<h2>Leads</h2>
+
+<table class="table table-striped table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>Tarefas</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let lead of leads">
+      <td>{{ lead.name }}</td>
+      <td>{{ lead.email }}</td>
+      <td>{{ lead.status }}</td>
+      <td>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let task of lead.tasks">
+              <td>{{ task.title }}</td>
+              <td>{{ task.status }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" (click)="editarTask(lead.id, task)">Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="excluirTask(lead.id, task.id)">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td>
+        <button class="btn btn-primary btn-sm" (click)="editarLead(lead)">Editar</button>
+        <button class="btn btn-danger btn-sm" (click)="excluirLead(lead.id)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
