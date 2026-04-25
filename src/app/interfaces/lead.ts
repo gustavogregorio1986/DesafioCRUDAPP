@@ -1,4 +1,5 @@
 import { LeadStatus } from "./lead-status";
+import { TaskItem } from "./task-item";
 
 export interface Lead {
   id: number;
@@ -7,5 +8,6 @@ export interface Lead {
   status: LeadStatus;
   createdAt: string;
   updatedAt: string;
+  tasks?: TaskItem[];
   tasksCount?: number;
 }
