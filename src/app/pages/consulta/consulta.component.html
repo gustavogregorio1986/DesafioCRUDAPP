@@ -1,62 +1,74 @@
-<h2>Leads</h2>
-
-<!-- Área de filtros -->
-<div class="row mb-3">
-  <div class="col-md-6">
-    <input [(ngModel)]="searchTerm" placeholder="Buscar por nome ou email" class="form-control">
-  </div>
-  <div class="col-md-4">
-    <select [(ngModel)]="statusFilter" class="form-select">
-      <option value="">Todos os Status</option>
-      <option value="New">New</option>
-      <option value="Qualified">Qualified</option>
-      <option value="Won">Won</option>
-      <option value="Lost">Lost</option>
-    </select>
-  </div>
-</div>
-
-<!-- Tabela de Leads -->
-<table class="table table-striped table-bordered">
-  <thead class="table-dark">
-    <tr>
-      <th>Nome</th>
-      <th>Email</th>
-      <th>Status</th>
-      <th>Tarefas</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let lead of filteredLeads()">
-      <td>{{ lead.name }}</td>
-      <td>{{ lead.email }}</td>
-      <td>{{ lead.status }}</td>
-      <td>
-        <table class="table table-sm">
-          <thead>
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Leads</h2>
+      <div class="d-flex gap-2">
+        <input [(ngModel)]="searchTerm" placeholder="Buscar por nome ou email" class="form-control form-control-sm" style="width: 250px;">
+        <select [(ngModel)]="statusFilter" class="form-select form-select-sm" style="width: 200px;">
+          <option value="">Todos os Status</option>
+          <option value="New">Novo</option>
+          <option value="Qualified">Qualificado</option>
+          <option value="Won">Ganho</option>
+          <option value="Lost">Perdido</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-primary">
             <tr>
-              <th>Título</th>
+              <th>Nome</th>
+              <th>Email</th>
               <th>Status</th>
-              <th>Ações</th>
+              <th>Tarefas</th>
+              <th class="text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let task of lead.tasks">
-              <td>{{ task.title }}</td>
-              <td>{{ task.status }}</td>
+            <tr *ngFor="let lead of filteredLeads()">
+              <td>{{ lead.name }}</td>
+              <td>{{ lead.email }}</td>
               <td>
-                <button class="btn btn-warning btn-sm" (click)="editarTask(lead.id, task)">Editar</button>
-                <button class="btn btn-danger btn-sm" (click)="excluirTask(lead.id, task.id)">Excluir</button>
+                <span class="badge bg-info">{{ lead.status }}</span>
+              </td>
+              <td>
+                <table class="table table-sm mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Título</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let task of lead.tasks">
+                      <td>{{ task.title }}</td>
+                      <td>
+                        <span [ngClass]="{
+                          'badge bg-secondary': task.status === 'Todo',
+                          'badge bg-warning text-dark': task.status === 'Doing',
+                          'badge bg-success': task.status === 'Done'
+                        }">
+                          {{ task.status }}
+                        </span>
+                      </td>
+                      <td>
+                        <button class="btn btn-outline-warning btn-sm me-1" (click)="editarTask(lead.id, task)">Editar</button>
+                        <button class="btn btn-outline-danger btn-sm" (click)="excluirTask(lead.id, task.id)">Excluir</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td class="text-center">
+                <button class="btn btn-outline-primary btn-sm me-1" (click)="editarLead(lead)">Editar</button>
+                <button class="btn btn-outline-danger btn-sm" (click)="excluirLead(lead.id)">Excluir</button>
               </td>
             </tr>
           </tbody>
         </table>
-      </td>
-      <td>
-        <button class="btn btn-primary btn-sm" (click)="editarLead(lead)">Editar</button>
-        <button class="btn btn-danger btn-sm" (click)="excluirLead(lead.id)">Excluir</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </div>
+    </div>
+  </div>
+</div>
