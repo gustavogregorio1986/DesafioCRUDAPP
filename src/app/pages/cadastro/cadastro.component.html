@@ -1,57 +1,63 @@
-<h2>Cadastrar Lead</h2>
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Cadastrar Lead</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="leadForm" (ngSubmit)="salvar()">
+        <!-- Campos do Lead -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Nome</label>
+            <input formControlName="name" class="form-control" placeholder="Digite o nome">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input formControlName="email" class="form-control" placeholder="Digite o email">
+          </div>
+        </div>
 
-<form (ngSubmit)="salvar()">
-  <!-- Campos do Lead -->
-  <div class="mb-3">
-    <label>Nome</label>
-    <input [(ngModel)]="lead.name" name="name" required class="form-control">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Status</label>
+            <select formControlName="status" class="form-select">
+              <option value="New">Novo</option>
+              <option value="Qualified">Qualificado</option>
+              <option value="Won">Ganho</option>
+              <option value="Lost">Perdido</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campos das Tasks -->
+        <h4 class="mt-4">Tarefas</h4>
+        <button type="button" class="btn btn-secondary mb-3" (click)="adicionarTask()">Adicionar Tarefa</button>
+
+        <div formArrayName="tasks">
+          <div *ngFor="let task of tasks.controls; let i = index" [formGroupName]="i" class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Título da tarefa</label>
+              <input formControlName="title" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Status da tarefa</label>
+              <select formControlName="status" class="form-select">
+                <option value="Todo">A Fazer</option>
+                <option value="Doing">Em Andamento</option>
+                <option value="Done">Concluída</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Prazo</label>
+              <input formControlName="dueDate" type="date" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 text-end">
+          <button type="submit" class="btn btn-success">Salvar Lead</button>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <div class="mb-3">
-    <label>Email</label>
-    <input [(ngModel)]="lead.email" name="email" required email class="form-control">
-  </div>
-
-  <div class="mb-3">
-    <label>Status</label>
-    <select [(ngModel)]="lead.status" name="status" required class="form-select">
-      <option value="New">New</option>
-      <option value="Qualified">Qualified</option>
-      <option value="Won">Won</option>
-      <option value="Lost">Lost</option>
-    </select>
-  </div>
-
-  <!-- Campos das Tasks -->
-  <h3>Tarefas</h3>
-  <div class="mb-3">
-    <label>Título da tarefa</label>
-    <input [(ngModel)]="novaTask.title" name="title" placeholder="Título da tarefa" class="form-control">
-  </div>
-
-  <div class="mb-3">
-    <label>Status da tarefa</label>
-    <select [(ngModel)]="novaTask.status" name="statusTask" class="form-select">
-      <option value="Todo">Todo</option>
-      <option value="Doing">Doing</option>
-      <option value="Done">Done</option>
-    </select>
-  </div>
-
-  <div class="mb-3">
-    <label>Prazo (opcional)</label>
-    <input [(ngModel)]="novaTask.dueDate" name="dueDate" type="date" class="form-control">
-  </div>
-
-  <button type="button" class="btn btn-secondary" (click)="adicionarTask()">Adicionar Tarefa</button>
-
-  <!-- Lista de tarefas adicionadas -->
-  <ul class="mt-3">
-    <li *ngFor="let task of lead.tasks">
-      {{ task.title }} - {{ task.status }}
-      <span *ngIf="task.dueDate"> (Prazo: {{ task.dueDate }})</span>
-    </li>
-  </ul>
-
-  <button type="submit" class="btn btn-success mt-3">Salvar Lead</button>
-</form>
+</div>

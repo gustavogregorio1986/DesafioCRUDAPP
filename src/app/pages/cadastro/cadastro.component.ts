@@ -1,69 +1,40 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';   // <-- importa aqui
-import { CommonModule } from '@angular/common'; // boa prática para diretivas básicas
-
-import { LeadService } from '../../services/lead.service';
-import { Lead } from '../../interfaces/lead';
-import { TaskItem } from '../../interfaces/task-item';
-import { TaskForm } from '../../interfaces/TakForm';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cadastro',
-  standalone: true,              // <-- standalone habilitado
-  imports: [CommonModule, FormsModule], // <-- módulos usados no template
-  templateUrl: './cadastro.component.html'
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule], // <-- IMPORTANTE
+  templateUrl: './cadastro.component.html',
+  styleUrls: ['./cadastro.component.css']
 })
 export class CadastroComponent {
-  lead: Lead = {
-    id: 0,
-    name: '',
-    email: '',
-    status: 'New',
-    createdAt: '',
-    updatedAt: '',
-    tasks: [],
-    tasksCount: 0
-  };
+  leadForm: FormGroup;
 
-  novaTask: TaskForm = { title: '', status: 'Todo' };
-
-  constructor(private leadService: LeadService) {}
-
-  adicionarTask() {
-    const id = (this.lead.tasks?.length || 0) + 1;
-    const task: TaskItem = {
-      id,
-      leadId: this.lead.id,
-      title: this.novaTask.title,
-      status: this.novaTask.status,
-      dueDate: this.novaTask.dueDate,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.lead.tasks?.push(task);
-    this.lead.tasksCount = this.lead.tasks?.length;
-    this.novaTask = { title: '', status: 'Todo' };
-  }
-
-  salvar() {
-    this.leadService.addLead(this.lead).subscribe(() => {
-      alert('Lead cadastrado com sucesso!');
-      this.resetForm();
+  constructor(private fb: FormBuilder) {
+    this.leadForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      status: ['New', Validators.required],
+      tasks: this.fb.array([])
     });
   }
 
-  private resetForm() {
-    this.lead = {
-      id: 0,
-      name: '',
-      email: '',
-      status: 'New',
-      createdAt: '',
-      updatedAt: '',
-      tasks: [],
-      tasksCount: 0
-    };
-    this.novaTask = { title: '', status: 'Todo' };
+  get tasks(): FormArray {
+    return this.leadForm.get('tasks') as FormArray;
+  }
+
+  adicionarTask() {
+    const taskGroup = this.fb.group({
+      title: ['', Validators.required],
+      status: ['Todo', Validators.required],
+      dueDate: ['']
+    });
+    this.tasks.push(taskGroup);
+  }
+
+  salvar() {
+    console.log('Lead cadastrado:', this.leadForm.value);
   }
 }
