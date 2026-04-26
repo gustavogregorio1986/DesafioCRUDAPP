@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { LeadService } from '../../services/lead.service';
 import { Lead } from '../../interfaces/lead';
 import { TaskItem } from '../../interfaces/task-item';
+import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-consulta',
   standalone: true, // importante para Angular 17+
-  imports: [CommonModule, FormsModule], // aqui entram os módulos usados no template
+  imports: [CommonModule, FormsModule, FooterComponent], // aqui entram os módulos usados no template
   templateUrl: './consulta.component.html',
   styleUrls: ['./consulta.component.css'] // cuidado: é styleUrls (plural)
 })

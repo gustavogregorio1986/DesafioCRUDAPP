@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-cadastro',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // <-- IMPORTANTE
+  imports: [CommonModule, ReactiveFormsModule, FooterComponent], // <-- IMPORTANTE
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css']
 })
